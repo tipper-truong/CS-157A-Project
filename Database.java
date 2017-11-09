@@ -59,7 +59,7 @@ public class Database {
 	private Statement stmt;
 
 	/**
-	 * Constructing the Books Database and it's required tables --> Book, Author, Publisher, AuthorISBN
+	 * Constructing the Books Database and it's required tables --> Titles, Author, Publisher, AuthorISBN
 	 * @throws ClassNotFoundException
 	 * @throws SQLException
 	 */
