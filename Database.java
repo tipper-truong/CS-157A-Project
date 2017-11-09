@@ -9,6 +9,7 @@ public class Database {
 	private static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
 	private static final String DB_URL_INITIAL =  "jdbc:mysql://localhost:3306/?autoReconnect=true&useSSL=false"; // use when Books database has not been created
 	private static final String DB_URL =  "jdbc:mysql://localhost:3306/Books?autoReconnect=true&useSSL=false"; // use when Books database has been created
+	
 	// Database Name
 	private final String DB_NAME = "Books";
 	
@@ -172,7 +173,7 @@ public class Database {
 	/**
 	 * Checks if table exists
 	 * @param tableName The table name to we want to check if it exists
-	 * @return
+	 * @return true if table exists, false otherwise
 	 * @throws SQLException
 	 */
 	private boolean checkTableExists(String tableName) throws SQLException
