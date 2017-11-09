@@ -7,8 +7,8 @@ public class Database {
 
 	//JDBC Driver Name and Database URL
 	private static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
-	private static final String DB_URL =  "jdbc:mysql://localhost:3306/Books?autoReconnect=true&useSSL=false";
-	
+	private static final String DB_URL_INITIAL =  "jdbc:mysql://localhost:3306/?autoReconnect=true&useSSL=false"; // use when Books database has not been created
+	private static final String DB_URL =  "jdbc:mysql://localhost:3306/Books?autoReconnect=true&useSSL=false"; // use when Books database has been created
 	// Database Name
 	private final String DB_NAME = "Books";
 	
@@ -71,12 +71,14 @@ public class Database {
 		// Connect to Database
 		Class.forName(JDBC_DRIVER);
 		System.out.println("Connecting to database...");
-		dbConnect = DriverManager.getConnection(DB_URL, USERNAME, PASSWORD);
+		dbConnect = DriverManager.getConnection(DB_URL_INITIAL, USERNAME, PASSWORD);
 		boolean dbExist = checkDatabaseExists(DB_NAME);
 		
 		// Create Books Database
 		createBooksDatabase(dbExist); 
-
+		
+		// Assuming Books Database has been created, create a new connection
+		dbConnect = DriverManager.getConnection(DB_URL, USERNAME, PASSWORD);
 
 		// Create Tables Titles, Author, Publisher, AuthorISBN
 		boolean tableExists = checkTableExists(TITLES_TABLE);
@@ -137,9 +139,9 @@ public class Database {
 	public void createTable(boolean tableExists, String tableName, String createTableQuery) throws SQLException
 	{
 		if(!tableExists) {
-			System.out.println("Creating " + tableName + " ...");
 			stmt = dbConnect.createStatement();
 			stmt.executeUpdate(createTableQuery);
+			System.out.println("Created " + tableName + " successfully");
 			stmt.close();
 		} else {
 			System.out.println("Table: " + tableName + " already exists");
