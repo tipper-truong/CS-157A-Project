@@ -1,6 +1,8 @@
 # CS-157A-Project
 CS 157A Project than handles CREATE, READ, UPDATE, and DELETE functions of a book management organization system. Using JDBC to communicate with MySQL
 
+** Please note: Only push .java files here, not your entire Eclipse project **
+
 Links to get started on the project:
 - Install MySQL Windows --> https://dev.mysql.com/doc/workbench/en/wb-installing-windows.html
 - Install MySQL Mac OSX --> https://gist.github.com/nrollr/3f57fc15ded7dddddcc4e82fe137b58e
