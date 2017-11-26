@@ -9,3 +9,4 @@ Links to get started on the project:
 - Install JDBC Driver --> https://dev.mysql.com/downloads/connector/j/
 - Install JDBC Driver to Eclipse --> http://www.ccs.neu.edu/home/kathleen/classes/cs3200/JDBCtutorial.pdf
 - MySQL Database Credentials --> Username = 'root', Password = ""
+- Please paste 157a.sql file in your src folder to have the Database code parse/locate the file correctly
