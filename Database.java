@@ -115,6 +115,15 @@ public class Database {
 		insertAuthor(dbConnect, a);
 		System.out.println("After adding new author...");
 		selectAuthors(dbConnect);
+		System.out.println("\n");
+		System.out.println("Before adding new publisher...");
+		selectPublishers(dbConnect);
+		Publisher p = new Publisher(16, "Penguin Classics");
+		insertPublisher(dbConnect, p);
+		System.out.println("\n");
+		System.out.println("After adding new publisher...");
+		selectPublishers(dbConnect);
+		
 
 	}
 
@@ -270,6 +279,30 @@ public class Database {
 	}
 	
 	/********** Publisher **********/
+	public void insertPublisher(Connection c, Publisher p)
+	{
+		PreparedStatement preparedStatement = null;
+
+		String insertTableSQL = "INSERT INTO Publisher"
+				+ "(publisherID, publisherName) VALUES"
+				+ "(?,?)";
+
+		try {
+	
+			preparedStatement = c.prepareStatement(insertTableSQL);
+
+			preparedStatement.setInt(1, p.getPublisherID());
+			preparedStatement.setString(2, p.getPublisherName());
+
+			// execute insert SQL statement
+			preparedStatement.executeUpdate();
+
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+
+		}
+	}
 	public void selectPublishers(Connection c)
 	{
 		try {
