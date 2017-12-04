@@ -7,6 +7,8 @@ VALUES
 	("1449355730" , "Learning Python" , 5, "2013", 5, 58.58),
 	("0134706056" , "Android Programming: The Big Nerd Ranch Guide" , 3, "2017", 6, 31.15),
 	("054792819X", "Lord of the Rings: Return of the King" , 1, "2012", 7, 10.48),
+	("0547928203", "Lord of the Rings: The Two Towers", 1, "2012", 7, 9.00),
+	("0547928211", "Lord of the Rings: The Fellowship of the Ring", 1, "2012", 7, 8.00),
 	("1118531647" , "JavaScript and JQuery: Interactive Front-End Web Development" , 1, "2014", 8, 24.01),
 	("0132350882" , "Clean Code: A Handbook of Agile Software Craftsmanship" , 1, "2008", 9, 28.66),
 	("0201485672", "Refactoring: Improving the Design of Existing Code", 1, "1999", 10, 44.33),

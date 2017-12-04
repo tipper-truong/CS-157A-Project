@@ -102,6 +102,19 @@ public class Database {
 		// Parse 157a.sql file and insert 15 entries for each table in Books database
 		File inputFile = new File("src/157a.sql");
 		executeSqlScript(dbConnect, inputFile);
+		
+		selectPublishers(dbConnect);
+		selectAuthors(dbConnect);
+		selectSpecificPublisher(dbConnect, 7); // J.R.R. Tolkien
+		System.out.println("\n");
+		System.out.println("Before adding new author...");
+		selectAuthors(dbConnect);
+		System.out.println("\n");
+		System.out.println("Add New Author");
+		Author a = new Author(16, "John", "Doe");
+		insertAuthor(dbConnect, a);
+		System.out.println("After adding new author...");
+		selectAuthors(dbConnect);
 
 	}
 
@@ -198,6 +211,8 @@ public class Database {
 		} return tableExists;
 	}
 	
+
+	
 	/** 
 	 * Code Citation: https://stackoverflow.com/questions/1497569/how-to-execute-sql-script-file-using-jdbc
 	 * Responsible for executing sql statements from a .sql file
@@ -252,6 +267,126 @@ public class Database {
 		}
 
 		scanner.close();
+	}
+	
+	/********** Publisher **********/
+	public void selectPublishers(Connection c)
+	{
+		try {
+		System.out.println("\n");
+		System.out.println("Select All Publishers");
+		stmt = c.createStatement();
+		String sql = "SELECT * FROM Publisher";
+	      ResultSet rs = stmt.executeQuery(sql);
+	      //STEP 5: Extract data from result set
+	      while(rs.next()){
+	         //Retrieve by column name
+	         int id  = rs.getInt("publisherID");
+	         String name = rs.getString("publisherName");
+
+	         //Display values
+	         System.out.print("ID: " + id);
+	         System.out.println(", Publisher Name: " + name);
+	      }
+	      rs.close();
+	   }catch (SQLException se){
+	      //Handle errors for JDBC
+	      se.printStackTrace();
+	   }catch(Exception e){
+	      //Handle errors for Class.forName
+	      e.printStackTrace();
+	   }
+	}
+	
+	/********** Author **********/
+	public void insertAuthor(Connection conn, Author a) throws SQLException 
+	{
+
+		PreparedStatement preparedStatement = null;
+
+		String insertTableSQL = "INSERT INTO Author"
+				+ "(authorID, firstName, lastName) VALUES"
+				+ "(?,?,?)";
+
+		try {
+	
+			preparedStatement = conn.prepareStatement(insertTableSQL);
+
+			preparedStatement.setInt(1, a.getAuthorID());
+			preparedStatement.setString(2, a.getFirstName());
+			preparedStatement.setString(3, a.getLastName());
+
+			// execute insert SQL statement
+			preparedStatement.executeUpdate();
+
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+
+		}
+
+	}
+
+	public void selectAuthors(Connection c)
+	{
+		// select * from author order by TRIM(lastName) ASC, TRIM(firstName);
+		try {
+			System.out.println("\n");
+			System.out.println("Select all authors from Author table. Order the information alphabetically by the author's last name and first name");
+			stmt = c.createStatement();
+			String sql = "select * from author order by TRIM(lastName) ASC, TRIM(firstName) ASC";
+		      ResultSet rs = stmt.executeQuery(sql);
+		      //STEP 5: Extract data from result set
+		      while(rs.next()){
+		         //Retrieve by column name
+		         String firstName = rs.getString("firstName");
+		         String lastName = rs.getString("lastName");
+
+		         //Display values
+		         System.out.print(firstName);
+		         System.out.println(", " + lastName);
+		      }
+		      rs.close();
+		   }catch (SQLException se){
+		      //Handle errors for JDBC
+		      se.printStackTrace();
+		   }catch(Exception e){
+		      //Handle errors for Class.forName
+		      e.printStackTrace();
+		   }
+	}
+	
+	/********** Titles **********/
+	public void selectSpecificPublisher(Connection c, int publisherID)
+	{
+		try {
+			System.out.println("\n");
+			System.out.println("Select a specific publisher and list all books published by that publisher. Include the title, year and ISBN number. Order the information alphabetically by title. ");
+			stmt = c.createStatement();
+			String sql = "SELECT isbn, title, year, publisherID FROM titles WHERE publisherID = " + String.valueOf(publisherID)  + " ORDER BY title;";
+		      ResultSet rs = stmt.executeQuery(sql);
+		      //STEP 5: Extract data from result set
+		      while(rs.next()){
+		         //Retrieve by column name
+		         String isbn = rs.getString("isbn");
+		         String title = rs.getString("title");
+		         String year = rs.getString("year");
+		         int pID = rs.getInt("publisherID");
+
+		         //Display values
+		         System.out.print(isbn);
+		         System.out.print(", " + title);
+		         System.out.print(", " + year);
+		         System.out.print(", " + pID + "\n");
+		      }
+		      rs.close();
+		   }catch (SQLException se){
+		      //Handle errors for JDBC
+		      se.printStackTrace();
+		   }catch(Exception e){
+		      //Handle errors for Class.forName
+		      e.printStackTrace();
+		   }
 	}
 }
 
