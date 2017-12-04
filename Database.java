@@ -116,6 +116,29 @@ public class Database {
 		System.out.println("After adding new author...");
 		selectAuthors(dbConnect);
 		System.out.println("\n");
+		
+		
+		System.out.println("Before Edit/Update Existing information about a Author...");
+		selectAuthors(dbConnect);
+		System.out.println("\n");
+		System.out.println("After Edit/Update Existing Information about an Author...");
+		Author b = new Author(2, "Kay", "Beck");
+		editInfoAuthor(dbConnect, b);
+		selectAuthors(dbConnect);
+		System.out.println("\n");
+		
+		
+		System.out.println("Before adding new title for an author...");
+		selectAuthors(dbConnect);
+		System.out.println("\n");
+		System.out.println("Adding new title for an author...");
+		float price = (float) 8.41;
+		Titles title1 = new Titles("0439139600", "Harry Potter and the Goblet of Fire", 1, 2002, 3, price);
+		AuthorISBN authI = new AuthorISBN(7, "0439139600");
+		addNewTitle(dbConnect, title1, authI);
+		selectSpecificPublisher(dbConnect, 3);
+		System.out.println("\n");
+		
 		System.out.println("Before adding new publisher...");
 		selectPublishers(dbConnect);
 		Publisher p = new Publisher(16, "Penguin Classics");
@@ -123,6 +146,16 @@ public class Database {
 		System.out.println("\n");
 		System.out.println("After adding new publisher...");
 		selectPublishers(dbConnect);
+		
+		
+		System.out.println("Before Edit/Update Existing information about a publisher...");
+		selectPublishers(dbConnect);
+		System.out.println("\n");
+		System.out.println("After Edit/Update Existing Information about an publisher...");
+		Publisher pub1 = new Publisher(1, "ChangedPublisher");
+		editInfoPublisher(dbConnect, pub1);
+		selectPublishers(dbConnect);
+		System.out.println("\n");
 		
 
 	}
@@ -331,6 +364,30 @@ public class Database {
 	   }
 	}
 	
+	public void editInfoPublisher(Connection c, Publisher pb){
+		PreparedStatement preparedStatement = null;
+
+		String editAuthorSQL = "UPDATE publisher "
+				+ "SET publisherName = ? "
+				+ "WHERE publisherID = ?";
+
+		try {
+	
+			preparedStatement = c.prepareStatement(editAuthorSQL);
+
+			preparedStatement.setInt(2, pb.getPublisherID());
+			preparedStatement.setString(1, pb.getPublisherName());
+			//preparedStatement.setString(3, auth.getLastName());
+
+			// execute insert SQL statement
+			preparedStatement.executeUpdate();
+
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	/********** Author **********/
 	public void insertAuthor(Connection conn, Author a) throws SQLException 
 	{
@@ -389,6 +446,30 @@ public class Database {
 		   }
 	}
 	
+	public void editInfoAuthor(Connection c, Author auth){
+		PreparedStatement preparedStatement = null;
+
+		String editAuthorSQL = "UPDATE Author "
+				+ "SET firstName = ? "
+				+ "WHERE authorID = ?";
+
+		try {
+	
+			preparedStatement = c.prepareStatement(editAuthorSQL);
+
+			preparedStatement.setInt(2, auth.getAuthorID());
+			preparedStatement.setString(1, auth.getFirstName());
+			//preparedStatement.setString(3, auth.getLastName());
+
+			// execute insert SQL statement
+			preparedStatement.executeUpdate();
+
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	/********** Titles **********/
 	public void selectSpecificPublisher(Connection c, int publisherID)
 	{
@@ -420,6 +501,53 @@ public class Database {
 		      //Handle errors for Class.forName
 		      e.printStackTrace();
 		   }
+	}
+	
+	public void addNewTitle(Connection c, Titles t1, AuthorISBN authIsbn){
+		PreparedStatement preparedStatement = null;
+
+//		String insertTableSQL = "INSERT INTO authorISBN, "
+//				+ "titles(authorISBN.authorID, authorISBN.isbn, "
+//				+ "titles.isbn, titles.title, titles.editionNumber, titles.year, titles.publisherID, titles.price) "
+//				+ "VALUES (?,?,?,?,?,?,?,?)";
+		
+		String insertTableSQL = "INSERT INTO "
+				+ "titles(isbn, title, editionNumber, year, publisherID, price)"
+				+ "VALUES (?,?,?,?,?,?)";
+		
+		String insertAuthorISBNTableSQL = "INSERT INTO "
+				+ "authorISBN(authorID, isbn)"
+				+ "VALUES (?,?)";
+
+		try {
+	
+			preparedStatement = c.prepareStatement(insertTableSQL);
+
+			preparedStatement.setString(1, t1.getIsbn());
+			preparedStatement.setString(2, t1.getTitle());
+			preparedStatement.setInt(3, t1.getEditionNumber());
+			preparedStatement.setInt(4, t1.getYear());
+			preparedStatement.setInt(5, t1.getPublisherID());
+			preparedStatement.setFloat(6, t1.getPrice());
+			
+			// execute insert SQL statement
+			preparedStatement.executeUpdate();
+			
+			preparedStatement = c.prepareStatement(insertAuthorISBNTableSQL);
+			
+			preparedStatement.setInt(1, authIsbn.getAuthorID());
+			preparedStatement.setString(2, authIsbn.getIsbn());
+			
+			// execute insert SQL statement
+			preparedStatement.executeUpdate();
+
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+
+		}
+		
+
 	}
 }
 
