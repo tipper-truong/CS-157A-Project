@@ -111,7 +111,7 @@ public class Database {
 		selectAuthors(dbConnect);
 		System.out.println("\n");
 		System.out.println("Add New Author");
-		Author a = new Author(17, "John", "Doe");
+		Author a = new Author(18, "John", "Doe");
 		insertAuthor(dbConnect, a);
 		System.out.println("After adding new author...");
 		selectAuthors(dbConnect);
